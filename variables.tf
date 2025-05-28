@@ -56,3 +56,9 @@ variable "instance_name" {
   type        = string
   default     = "UbuntuLatest"
 }
+
+variable "root_disk_size" {
+  description = "Disk size"
+  type        = number
+  default     = 100
+}

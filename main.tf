@@ -101,6 +101,11 @@ resource "aws_instance" "my_ec2_instance" {
   key_name               = aws_key_pair.ssh_key.key_name
   vpc_security_group_ids = [aws_security_group.ssh_access.id]
 
+  root_block_device {
+    volume_size = var.root_disk_size
+    volume_type = "gp3"
+  }
+
   tags = {
     Name = var.instance_name
   }
