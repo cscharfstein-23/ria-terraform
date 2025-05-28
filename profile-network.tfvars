@@ -1,2 +1,2 @@
-instance_type    = "t3.small"
+instance_type    = "t3.medium"
 instance_name    = "team-network"
