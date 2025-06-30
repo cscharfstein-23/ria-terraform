@@ -99,7 +99,7 @@ data "turbonomic_cloud_entity_recommendation" "example" {
 # EC2 instance
 resource "aws_instance" "my_ec2_instance" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
+  # instance_type          = var.instance_type
   instance_type = (
     data.turbonomic_cloud_entity_recommendation.example.new_instance_type != null
     ? data.turbonomic_cloud_entity_recommendation.example.new_instance_type
