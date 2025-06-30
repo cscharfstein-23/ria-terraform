@@ -9,10 +9,10 @@
 
 terraform {
   required_providers {
-    # turbonomic = {
-    #   source  = "IBM/turbonomic"
-    #   version = "1.0.2"
-    # }
+    turbonomic = {
+      source  = "IBM/turbonomic"
+      version = "1.0.2"
+    }
     aws = {
       source = "hashicorp/aws"
       version = "6.0.0-beta2"
@@ -20,12 +20,12 @@ terraform {
   }
 }
 
-# provider "turbonomic" {
-#   username   = var.turbonomic_username
-#   password   = var.turbonomic_password
-#   hostname   = var.turbonomic_hostname
-#   skipverify = true
-# }
+provider "turbonomic" {
+  username   = var.turbonomic_username
+  password   = var.turbonomic_password
+  hostname   = var.turbonomic_hostname
+  skipverify = true
+}
 
 provider "aws" {
   region     = var.aws_region
@@ -91,20 +91,20 @@ resource "aws_key_pair" "ssh_key" {
   public_key = file(var.public_key_path)
 }
 
-# data "turbonomic_cloud_entity_recommendation" "example" {
-#   entity_name = var.instance_name
-#   entity_type = "VirtualMachine"
-# }
+data "turbonomic_cloud_entity_recommendation" "example" {
+  entity_name = var.instance_name
+  entity_type = "VirtualMachine"
+}
 
 # EC2 instance
 resource "aws_instance" "my_ec2_instance" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
-  # instance_type = (
-  #   data.turbonomic_cloud_entity_recommendation.example.new_instance_type != null
-  #   ? data.turbonomic_cloud_entity_recommendation.example.new_instance_type
-  #   : var.instance_type
-  # )
+  instance_type = (
+    data.turbonomic_cloud_entity_recommendation.example.new_instance_type != null
+    ? data.turbonomic_cloud_entity_recommendation.example.new_instance_type
+    : var.instance_type
+  )
 
   key_name               = aws_key_pair.ssh_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_access.id]
