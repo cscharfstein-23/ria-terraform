@@ -55,7 +55,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-# Security group for access
 resource "aws_security_group" "allow_access" {
   name        = "${var.instance_name}-sg"
   description = "Allow SSH, HTTP and Kubernetes API access"
@@ -65,7 +64,7 @@ resource "aws_security_group" "allow_access" {
     for_each = {
       ssh  = 22
       k8s  = 6443
-      webapp = 30080
+      web  = 80
     }
 
     content {
@@ -75,6 +74,15 @@ resource "aws_security_group" "allow_access" {
       protocol    = "tcp"
       cidr_blocks = var.ssh_allowed_cidrs
     }
+  }
+
+  # NodePort-Range für Kubernetes (30000–32767)
+  ingress {
+    description = "k8s-nodeport-range"
+    from_port   = 30000
+    to_port     = 32767
+    protocol    = "tcp"
+    cidr_blocks = var.ssh_allowed_cidrs
   }
 
   egress {
