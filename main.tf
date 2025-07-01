@@ -64,8 +64,8 @@ resource "aws_security_group" "allow_access" {
   dynamic "ingress" {
     for_each = {
       ssh  = 22
-      http = 80
       k8s  = 6443
+      webapp = 30080
     }
 
     content {
