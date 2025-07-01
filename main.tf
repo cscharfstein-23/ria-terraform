@@ -65,6 +65,7 @@ resource "aws_security_group" "allow_access" {
       ssh  = 22
       k8s  = 6443
       web  = 80
+      ssl  = 443
     }
 
     content {
