@@ -66,6 +66,7 @@ resource "aws_security_group" "allow_access" {
       k8s  = 6443
       web  = 80
       ssl  = 443
+      hcm = 55671
     }
 
     content {
