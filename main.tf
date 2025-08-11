@@ -67,6 +67,8 @@ resource "aws_security_group" "allow_access" {
       web  = 80
       ssl  = 443
       hcm = 55671
+      snmp = 161
+      snmp_trap = 162
     }
 
     content {
@@ -78,14 +80,14 @@ resource "aws_security_group" "allow_access" {
     }
   }
 
-  # NodePort-Range für Kubernetes (30000–32767)
-  ingress {
-    description = "k8s-nodeport-range"
-    from_port   = 30000
-    to_port     = 32767
-    protocol    = "tcp"
-    cidr_blocks = var.ssh_allowed_cidrs
-  }
+  # # NodePort-Range für Kubernetes (30000–32767)
+  # ingress {
+  #   description = "k8s-nodeport-range"
+  #   from_port   = 30000
+  #   to_port     = 32767
+  #   protocol    = "tcp"
+  #   cidr_blocks = var.ssh_allowed_cidrs
+  # }
 
   egress {
     from_port   = 0
