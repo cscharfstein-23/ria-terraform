@@ -112,7 +112,6 @@ data "turbonomic_cloud_entity_recommendation" "example" {
 
 # EC2 instance
 resource "aws_instance" "my_ec2_instance" {
-key_name                    = "ssh_key"
   ami                    = data.aws_ami.ubuntu.id
   # instance_type          = var.instance_type
   instance_type = (
