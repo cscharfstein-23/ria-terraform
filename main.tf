@@ -37,6 +37,7 @@ resource "tls_private_key" "rsa" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
+# dynamically create SSH Key
 resource "aws_key_pair" "ssh_key" {
   key_name   = "ssh_key"
   public_key = tls_private_key.rsa.public_key_openssh
@@ -104,13 +105,6 @@ resource "aws_security_group" "allow_access" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
-# Create key pair from a local public key file
-resource "aws_key_pair" "ssh_key" {
-  key_name   = "${var.instance_name}-ssh"
-  public_key = file(var.public_key_path)
-}
-
 data "turbonomic_cloud_entity_recommendation" "example" {
   entity_name = var.instance_name
   entity_type = "VirtualMachine"
