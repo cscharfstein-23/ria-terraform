@@ -39,7 +39,7 @@ resource "tls_private_key" "rsa" {
 }
 # dynamically create SSH Key
 resource "aws_key_pair" "ssh_key" {
-  key_name   = "ssh_key"
+  key_name   = "${var.instance_name}-ssh_key"
   public_key = tls_private_key.rsa.public_key_openssh
 }
 # Use default VPC
