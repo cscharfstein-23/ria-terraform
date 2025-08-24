@@ -33,6 +33,14 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
+resource "tls_private_key" "rsa" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+resource "aws_key_pair" "ssh_key" {
+  key_name   = "ssh_key"
+  public_key = tls_private_key.rsa.public_key_openssh
+}
 # Use default VPC
 data "aws_vpc" "default" {
   default = true
@@ -110,6 +118,7 @@ data "turbonomic_cloud_entity_recommendation" "example" {
 
 # EC2 instance
 resource "aws_instance" "my_ec2_instance" {
+key_name                    = "ssh_key"
   ami                    = data.aws_ami.ubuntu.id
   # instance_type          = var.instance_type
   instance_type = (
@@ -131,6 +140,12 @@ resource "aws_instance" "my_ec2_instance" {
   }
 }
 
+
+# Output SSH Key für weitere verwendung (Vault etc.) 
+output "ssh_key" {
+  value  = tls_private_key.rsa.private_key_pem
+
+}
 # Output public IP
 output "instance_ip" {
   description = "Die öffentliche IP-Adresse der EC2-Instanz"
