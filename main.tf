@@ -137,6 +137,7 @@ resource "aws_instance" "my_ec2_instance" {
 # Output SSH Key für weitere verwendung (Vault etc.) 
 output "ssh_key" {
   value  = tls_private_key.rsa.private_key_pem
+  sensitive = true
 
 }
 # Output public IP
